@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Logo Art Animation - Homepage</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body{
+        margin:0;
+        font-family:Arial,Helvetica,sans-serif;
+        background:#0d0d0d;
+        color:white;
+        text-align:center;
+    }
+    header{
+        padding:30px 0;
+        font-size:38px;
+        font-weight:900;
+        background:linear-gradient(90deg,#00eaff,#ff1b1b,#6a00ff);
+        -webkit-background-clip:text;
+        color:transparent;
+        text-transform:uppercase;
+        letter-spacing:4px;
+    }
+    .subhead{
+        margin-top:10px;
+        font-size:16px;
+        color:#bbb;
+    }
+    .container{
+        margin-top:40px;
+        display:flex;
+        justify-content:center;
+        gap:30px;
+        flex-wrap:wrap;
+    }
+    .logoBox{
+        width:260px;
+        height:180px;
+        background:#111;
+        border:2px solid #444;
+        border-radius:10px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        cursor:pointer;
+        font-size:24px;
+        transition:.3s;
+    }
+    .logoBox span{
+        display:block;
+        font-size:18px;
+        margin-top:6px;
+        color:#aaa;
+    }
+    .logoBox:hover{
+        transform:scale(1.06);
+        border-color:#00eaff;
+        box-shadow:0 0 20px #00eaff;
+    }
+    footer{
+        margin-top:70px;
+        font-size:14px;
+        color:#bbb;
+    }
+</style>
+</head>
+<body>
+
+<header>Logo Art Animation</header>
+<div class="subhead">Click a logo to open its full 3D animation</div>
+
+<div class="container">
+    <div class="logoBox" onclick="openLogo(1)">
+        Logo 1
+        <span>Marvel NHCE • THANK YOU</span>
+    </div>
+    <div class="logoBox" onclick="openLogo(2)">
+        Logo 2
+        <span>Marvel NHCE • COLLEGE</span>
+    </div>
+    <div class="logoBox" onclick="openLogo(3)">
+        Logo 3
+        <span>Hologram Cube • NHCE</span>
+    </div>
+</div>
+
+<footer>Presented by AKASH VARMA • Combined Single Page</footer>
+
+<!-- =========================
+     LOGO 1 TEMPLATE
+     ========================= -->
+<template id="logo1-template">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:system-ui,Arial,sans-serif;}
+
+.backHome{
+  position:fixed;
+  top:16px;
+  left:16px;
+  z-index:200;
+  padding:8px 14px;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  border:1px solid #555;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+}
+.backHome:hover{
+  background:#111;
+}
+
+#scene{
+  width:100%;height:100%;
+  display:flex;justify-content:center;align-items:center;
+  background:#000;
+  perspective:1600px;
+  overflow:hidden;
+}
+
+/* camera rig for subtle 3D tilt */
+.camera{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transform-style:preserve-3d;
+  animation:camDrift 14s ease-in-out infinite alternate;
+}
+@keyframes camDrift{
+  0%{transform:rotateX(10deg) rotateY(-8deg) translateZ(0);}
+  50%{transform:rotateX(6deg) rotateY(4deg) translateZ(40px);}
+  100%{transform:rotateX(9deg) rotateY(-2deg) translateZ(10px);}
+}
+
+/* ===== NETFLIX SLOW BEAMS ===== */
+.beam{
+  position:absolute;inset:0;
+  background:linear-gradient(115deg,
+    transparent 0%,
+    rgba(255,0,0,.9) 45%,
+    transparent 75%);
+  mix-blend-mode:screen;
+  transform:skewX(-15deg) translateZ(-200px);
+  opacity:0;
+  animation:beamGo 3.6s ease-out forwards;
+}
+.beam:nth-child(1){animation-delay:.2s;}
+.beam:nth-child(2){animation-delay:.6s;opacity:.7;}
+.beam:nth-child(3){animation-delay:1s;opacity:.5;}
+
+@keyframes beamGo{
+  0%{transform:translateX(-150%) skewX(-15deg) translateZ(-200px);opacity:0;}
+  100%{transform:translateX(150%) skewX(-15deg) translateZ(-200px);opacity:1;}
+}
+
+/* ===== PRIME ARC (slow & centered) ===== */
+.arc{
+  position:absolute;
+  width:80vmin;height:28vmin;
+  border-bottom:5px solid #00caff;
+  border-radius:50%;
+  bottom:30vh;left:50%;
+  transform:translate3d(-50%,0,-80px) scale(.1);
+  opacity:0;
+  animation:arcShow 3.2s ease-out forwards 1.4s;
+  filter:drop-shadow(0 0 30px #00eaff);
+}
+@keyframes arcShow{
+  0%{opacity:0;transform:translate3d(-50%,0,-80px) scale(.1);}
+  100%{opacity:1;transform:translate3d(-50%,0,-80px) scale(1);}
+}
+
+/* ===== MARVEL-STYLE 3D NHCE ===== */
+.logo3d{
+  position:relative;
+  transform:translateZ(80px);
+}
+
+.letters{
+  display:flex;
+  gap:1vw;
+}
+.letter3d{
+  position:relative;
+  font-size:15vw;
+  font-weight:900;
+  text-transform:uppercase;
+  color:#ff1b1b;
+  letter-spacing:.08em;
+  opacity:0;
+  transform:translateY(18vh) scale(3) rotateX(10deg);
+  filter:blur(18px);
+  animation:letterIn 2.8s cubic-bezier(.21,.9,.35,1.05) forwards;
+}
+.letter3d:nth-child(1){animation-delay:1.0s;}
+.letter3d:nth-child(2){animation-delay:1.4s;}
+.letter3d:nth-child(3){animation-delay:1.8s;}
+.letter3d:nth-child(4){animation-delay:2.2s;}
+
+/* 3D depth using stacked shadows */
+.letter3d{
+  text-shadow:
+    0 1px 0 #8b0000,
+    0 2px 0 #7a0000,
+    0 3px 0 #690000,
+    0 4px 0 #580000,
+    0 5px 0 #470000,
+    0 10px 12px rgba(0,0,0,0.8);
+}
+
+/* metallic shine layer behind (Marvel-ish) */
+.letter3d::before{
+  content:attr(data-letter);
+  position:absolute;
+  inset:0;
+  transform:translate3d(-6px,6px,-40px);
+  color:#3b0000;
+  filter:brightness(.5);
+  opacity:.9;
+}
+
+/* inner gradient highlight */
+.letter3d span{
+  background:linear-gradient(180deg,#ffeded 0%,#ff4b4b 40%,#bb0000 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+@keyframes letterIn{
+  0%{opacity:0;transform:translateY(18vh) scale(3.1) rotateX(18deg);filter:blur(20px);}
+  60%{opacity:1;transform:translateY(-1vh) scale(1) rotateX(5deg);filter:blur(0);}
+  100%{transform:translateY(0) scale(1.05) rotateX(0deg);}
+}
+
+/* central flare boom */
+.flare{
+  position:absolute;inset:0;
+  background:radial-gradient(circle, rgba(255,255,255,.9) 0%, transparent 60%);
+  opacity:0;
+  transform:translateZ(50px);
+  animation:flareBoom 1.9s ease-out forwards 2.8s;
+}
+@keyframes flareBoom{
+  0%{opacity:0;transform:scale(.3) translateZ(50px);}
+  50%{opacity:1;transform:scale(1) translateZ(50px);}
+  100%{opacity:0;transform:scale(1.8) translateZ(50px);}
+}
+
+/* ===== PRESENTED BY ===== */
+.subtitle{
+  position:absolute;
+  bottom:10vh;
+  width:100%;
+  text-align:center;
+  font-size:clamp(13px,2vw,18px);
+  letter-spacing:.35em;
+  color:#e9faff;
+  text-transform:uppercase;
+  opacity:0;
+  transform:translateZ(60px) translateY(18px);
+  animation:subIn 1.4s ease-out forwards 3.6s;
+}
+@keyframes subIn{
+  0%{opacity:0;transform:translateZ(60px) translateY(18px);}
+  100%{opacity:1;transform:translateZ(60px) translateY(0);}
+}
+
+/* ===== THANK YOU – 3D CRACKER BLAST ===== */
+.thankyou{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) translateZ(120px) scale(.2);
+  font-size:9vw;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:#ffe9a3;
+  text-align:center;
+  opacity:0;
+  filter:drop-shadow(0 0 20px #ffef9a);
+  pointer-events:none;
+}
+.thankyou::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:radial-gradient(circle, rgba(255,255,200,0.95) 0%, transparent 65%);
+  opacity:0;
+  filter:blur(4px);
+}
+
+/* cracker burst keyframes */
+.thankyou.show{
+  animation:tyBoom 2.2s ease-out forwards;
+}
+.thankyou.show::before{
+  animation:tyBurst 1.6s ease-out forwards;
+}
+
+@keyframes tyBoom{
+  0%{opacity:0;transform:translate(-50%,-50%) translateZ(120px) scale(.1) rotate(-18deg);}
+  45%{opacity:1;transform:translate(-50%,-50%) translateZ(140px) scale(1.4) rotate(4deg);}
+  100%{opacity:1;transform:translate(-50%,-50%) translateZ(140px) scale(1);}
+}
+@keyframes tyBurst{
+  0%{opacity:1;transform:scale(.2);}
+  40%{opacity:1;transform:scale(1.8);}
+  100%{opacity:0;transform:scale(2.4);}
+}
+
+/* little radial sparks around THANK YOU */
+.spark{
+  position:absolute;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff,#ffdf6a);
+  opacity:0;
+}
+.spark.show{
+  animation:sparkFly 1.4s ease-out forwards;
+}
+@keyframes sparkFly{
+  0%{opacity:1;transform:translate(0,0) scale(1);}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.4);}
+}
+
+/* HUD */
+.hud{
+  position:fixed;
+  bottom:20px;right:20px;
+  display:flex;gap:12px;
+  z-index:100;
+}
+button{
+  padding:7px 12px;
+  background:#111;
+  color:#eee;
+  border:1px solid #444;
+  border-radius:6px;
+  font-size:12px;
+  cursor:pointer;
+}
+button:hover{background:#222;}
+@media(max-width:640px){
+  .letter3d{font-size:18vw;}
+}
+</style>
+
+<button class="backHome" onclick="window.close()">← Back to Home</button>
+
+<div id="scene">
+  <div class="camera" id="camera">
+
+    <!-- Netflix beams -->
+    <div class="beam"></div>
+    <div class="beam"></div>
+    <div class="beam"></div>
+
+    <!-- Prime arc -->
+    <div class="arc" id="arc"></div>
+
+    <!-- 3D NHCE -->
+    <div class="logo3d">
+      <div class="letters" id="letters">
+        <div class="letter3d" data-letter="N"><span>N</span></div>
+        <div class="letter3d" data-letter="H"><span>H</span></div>
+        <div class="letter3d" data-letter="C"><span>C</span></div>
+        <div class="letter3d" data-letter="E"><span>E</span></div>
+      </div>
+    </div>
+
+    <!-- flare -->
+    <div class="flare"></div>
+
+    <!-- subtitle -->
+    <div class="subtitle">Presented by AKASH VARMA</div>
+
+    <!-- THANK YOU cracker text -->
+    <div class="thankyou" id="thankyou">WELCOME<br>TO&nbsp;NHCE</div>
+
+  </div>
+</div>
+
+<div class="hud">
+  <button id="micBtn">Enable Mic</button>
+  <button id="replayBtn">Replay</button>
+</div>
+
+<script>
+const scene = document.getElementById('scene');
+const camera = document.getElementById('camera');
+const thankyou = document.getElementById('thankyou');
+const micBtn = document.getElementById('micBtn');
+const replayBtn = document.getElementById('replayBtn');
+
+/* replay just reloads full intro */
+replayBtn.onclick = () => location.reload();
+
+/* trigger THANK YOU 3D cracker + sparks after intro timing */
+setTimeout(() => {
+  // show text
+  thankyou.classList.add('show');
+
+  // create sparks
+  for(let i=0;i<26;i++){
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const angle = (Math.PI*2) * (i/26);
+    const dist = 80 + Math.random()*80;
+    const tx = Math.cos(angle)*dist;
+    const ty = Math.sin(angle)*dist;
+    s.style.setProperty('--tx', tx+'px');
+    s.style.setProperty('--ty', ty+'px');
+    thankyou.appendChild(s);
+    // force reflow then show animation
+    requestAnimationFrame(()=> s.classList.add('show'));
+  }
+}, 4300); // slightly after NHCE + subtitle settle
+
+/* Mic-based shake */
+micBtn.onclick = async () => {
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const src = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 512;
+    src.connect(analyser);
+
+    const buffer = new Uint8Array(analyser.frequencyBinCount);
+    micBtn.textContent = 'Mic Active 🎤';
+
+    function loop(){
+      analyser.getByteFrequencyData(buffer);
+      const peak = Math.max(...buffer);
+      if(peak > 165){
+        camera.style.transform = 'translateY(-4px) translateZ(10px)';
+        setTimeout(()=> camera.style.transform = '', 90);
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }catch(err){
+    micBtn.textContent = 'Mic Error ❌';
+  }
+};
+</script>
+</template>
+
+<!-- =========================
+     LOGO 2 TEMPLATE
+     ========================= -->
+<template id="logo2-template">
+<style>
+p{
+  color:white;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+marquee{
+  padding: 10px 0;
+  background: rgba(0,0,0,0.5);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:system-ui,Arial,sans-serif;}
+
+.backHome{
+  position:fixed;
+  top:16px;
+  left:16px;
+  z-index:200;
+  padding:8px 14px;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  border:1px solid #555;
+  border-radius:6px;
+  font-size:13px;
+  cursor:pointer;
+}
+.backHome:hover{
+  background:#111;
+}
+
+#scene{
+  width:100%;height:100%;
+  display:flex;justify-content:center;align-items:center;
+  background:#000;
+  perspective:1600px;
+  overflow:hidden;
+}
+
+/* camera rig for subtle 3D tilt */
+.camera{
+  position:relative;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transform-style:preserve-3d;
+  animation:camDrift 14s ease-in-out infinite alternate;
+}
+@keyframes camDrift{
+  0%{transform:rotateX(10deg) rotateY(-8deg) translateZ(0);}
+  50%{transform:rotateX(6deg) rotateY(4deg) translateZ(40px);}
+  100%{transform:rotateX(9deg) rotateY(-2deg) translateZ(10px);}
+}
+
+/* ===== NETFLIX SLOW BEAMS ===== */
+.beam{
+  position:absolute;inset:0;
+  background:linear-gradient(115deg,
+    transparent 0%,
+    rgba(255,0,0,.9) 45%,
+    transparent 75%);
+  mix-blend-mode:screen;
+  transform:skewX(-15deg) translateZ(-200px);
+  opacity:0;
+  animation:beamGo 3.6s ease-out forwards;
+}
+.beam:nth-child(1){animation-delay:.2s;}
+.beam:nth-child(2){animation-delay:.6s;opacity:.7;}
+.beam:nth-child(3){animation-delay:1s;opacity:.5;}
+
+@keyframes beamGo{
+  0%{transform:translateX(-150%) skewX(-15deg) translateZ(-200px);opacity:0;}
+  100%{transform:translateX(150%) skewX(-15deg) translateZ(-200px);opacity:1;}
+}
+
+/* ===== PRIME ARC (slow & centered) ===== */
+.arc{
+  position:absolute;
+  width:80vmin;height:28vmin;
+  border-bottom:5px solid #00caff;
+  border-radius:50%;
+  bottom:30vh;left:50%;
+  transform:translate3d(-50%,0,-80px) scale(.1);
+  opacity:0;
+  animation:arcShow 3.2s ease-out forwards 1.4s;
+  filter:drop-shadow(0 0 30px #00eaff);
+}
+@keyframes arcShow{
+  0%{opacity:0;transform:translate3d(-50%,0,-80px) scale(.1);}
+  100%{opacity:1;transform:translate3d(-50%,0,-80px) scale(1);}
+}
+
+/* ===== MARVEL-STYLE 3D NHCE ===== */
+.logo3d{
+  position:relative;
+  transform:translateZ(80px);
+}
+
+.letters{
+  display:flex;
+  gap:4vw;
+}
+.letter3d{
+  position:relative;
+  font-size:15vw;
+  font-weight:900;
+  text-transform:uppercase;
+  color:#9bd610;
+  letter-spacing:.08em;
+  opacity:0;
+  transform:translateY(1800vh) scale(300) rotateX(100deg);
+  filter:blur(18px);
+  animation:letterIn 7.8s cubic-bezier(.21,.9,.35,1.05) forwards;
+}
+.letter3d:nth-child(1){animation-delay:1.0s;}
+.letter3d:nth-child(2){animation-delay:1.4s;}
+.letter3d:nth-child(3){animation-delay:1.8s;}
+.letter3d:nth-child(4){animation-delay:2.2s;}
+
+/* 3D depth using stacked shadows */
+.letter3d{
+  text-shadow:
+    0 1px 0 #788b00,
+    0 2px 0 #7a0000,
+    0 3px 0 #690000,
+    0 4px 0 #580000,
+    0 5px 0 #470000,
+    0 10px 12px rgba(0,0,0,0.8);
+}
+
+/* metallic shine layer behind (Marvel-ish) */
+.letter3d::before{
+  content:attr(data-letter);
+  position:absolute;
+  inset:0;
+  transform:translate3d(-6px,6px,-40px);
+  color:#3b0000;
+  filter:brightness(.5);
+  opacity:.9;
+}
+
+/* inner gradient highlight */
+.letter3d span{
+  background:linear-gradient(180deg,#ffeded 0%,#ff4b4b 40%,#bb0000 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+@keyframes letterIn{
+  0%{opacity:0;transform:translateY(18vh) scale(3.1) rotateX(18deg);filter:blur(20px);}
+  60%{opacity:1;transform:translateY(-1vh) scale(1) rotateX(5deg);filter:blur(0);}
+  100%{transform:translateY(0) scale(1.05) rotateX(0deg);}
+}
+
+/* central flare boom */
+.flare{
+  position:absolute;inset:0;
+  background:radial-gradient(circle, rgba(255,255,255,.9) 0%, transparent 60%);
+  opacity:0;
+  transform:translateZ(50px);
+  animation:flareBoom 1.9s ease-out forwards 2.8s;
+}
+@keyframes flareBoom{
+  0%{opacity:0;transform:scale(.3) translateZ(50px);}
+  50%{opacity:1;transform:scale(1) translateZ(50px);}
+  100%{opacity:0;transform:scale(1.8) translateZ(50px);}
+}
+
+/* ===== PRESENTED BY ===== */
+.subtitle{
+  position:absolute;
+  bottom:10vh;
+  width:100%;
+  text-align:center;
+  font-size:clamp(13px,2vw,18px);
+  letter-spacing:.35em;
+  color:#e9faff;
+  text-transform:uppercase;
+  opacity:0;
+  transform:translateZ(60px) translateY(18px);
+  animation:subIn 1.4s ease-out forwards 3.6s;
+}
+@keyframes subIn{
+  0%{opacity:0;transform:translateZ(60px) translateY(18px);}
+  100%{opacity:1;transform:translateZ(60px) translateY(0);}
+}
+
+/* ===== THANK YOU – 3D CRACKER BLAST ===== */
+.thankyou{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) translateZ(120px) scale(.1);
+  font-size:4.2vw;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:#ffe9a3;
+  text-align:center;
+  opacity:0;
+  filter:drop-shadow(0 0 20px #ffef9a);
+  pointer-events:none;
+}
+
+@keyframes tyBoom{
+  0%{opacity:0;transform:translate(-50%,-50%) translateZ(120px) scale(.05) rotate(-18deg);}
+  45%{opacity:1;transform:translate(-50%,-50%) translateZ(140px) scale(.5) rotate(4deg);}
+  100%{opacity:1;transform:translate(-50%,-50%) translateZ(140px) scale(.4);}
+}
+.thankyou::before{
+  content:"";
+  position:absolute;
+  inset:-10%;
+  background:radial-gradient(circle, rgba(255,255,200,0.95) 0%, transparent 45%);
+  opacity:0;
+  filter:(9px);
+}
+
+/* cracker burst keyframes */
+.thankyou.show{
+  animation:tyBoom 3.2s ease-out forwards;
+}
+.thankyou.show::before{
+  animation:tyBurst 1.6s ease-out forwards;
+}
+
+@keyframes tyBoom{
+  0%{opacity:0;transform:translate(-50%,-50%) translateZ(120px) scale(.1) rotate(-18deg);}
+  45%{opacity:1;transform:translate(-50%,-50%) translateZ(140px) scale(1.4) rotate(4deg);}
+  100%{opacity:1;transform:translate(-50%,-50%) translateZ(140px) scale(1);}
+}
+@keyframes tyBurst{
+  0%{opacity:1;transform:scale(.2);}
+  40%{opacity:1;transform:scale(1.8);}
+  100%{opacity:0;transform:scale(2.4);}
+}
+
+/* little radial sparks around THANK YOU */
+.spark{
+  position:absolute;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff,#ffdf6a);
+  opacity:0;
+}
+.spark.show{
+  animation:sparkFly 1.4s ease-out forwards;
+}
+@keyframes sparkFly{
+  0%{opacity:1;transform:translate(0,0) scale(1);}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.4);}
+}
+
+/* HUD */
+.hud{
+  position:fixed;
+  bottom:20px;right:20px;
+  display:flex;gap:12px;
+  z-index:100;
+}
+button{
+  padding:7px 12px;
+  background:#111;
+  color:#eee;
+  border:1px solid #444;
+  border-radius:6px;
+  font-size:12px;
+  cursor:pointer;
+}
+button:hover{background:#222;}
+@media(max-width:640px){
+  .letter3d{font-size:18vw;}
+}
+</style>
+
+<p><marquee behavior="scroll" direction="left">Presented by: AKASH VARMA</marquee></p>
+
+<button class="backHome" onclick="window.close()">← Back to Home</button>
+
+<div id="scene">
+  <div class="camera" id="camera">
+
+    <!-- Netflix beams -->
+    <div class="beam"></div>
+    <div class="beam"></div>
+    <div class="beam"></div>
+
+    <!-- Prime arc -->
+    <div class="arc" id="arc"></div>
+
+    <!-- 3D NHCE -->
+    <div class="logo3d">
+      <div class="letters" id="letters">
+        <div class="letter3d" data-letter="N"><span>N</span></div>
+        <div class="letter3d" data-letter="H"><span>H</span></div>
+        <div class="letter3d" data-letter="C"><span>C</span></div>
+        <div class="letter3d" data-letter="E"><span>E</span></div>
+      </div>
+    </div>
+
+    <!-- flare -->
+    <div class="flare"></div>
+
+    <!-- THANK YOU cracker text -->
+    <div class="thankyou" id="thankyou">College&nbsp;</div>
+
+  </div>
+</div>
+
+<div class="hud">
+  <button id="micBtn">Enable Mic</button>
+  <button id="replayBtn">Replay</button>
+</div>
+
+<script>
+const scene2 = document.getElementById('scene');
+const camera2 = document.getElementById('camera');
+const thankyou2 = document.getElementById('thankyou');
+const micBtn2 = document.getElementById('micBtn');
+const replayBtn2 = document.getElementById('replayBtn');
+
+/* replay just reloads full intro */
+replayBtn2.onclick = () => location.reload();
+
+/* trigger THANK YOU 3D cracker + sparks after intro timing */
+setTimeout(() => {
+  // show text
+  thankyou2.classList.add('show');
+
+  // create sparks
+  for(let i=0;i<26;i++){
+    const s = document.createElement('div');
+    s.className = 'spark';
+    const angle = (Math.PI*2) * (i/26);
+    const dist = 80 + Math.random()*80;
+    const tx = Math.cos(angle)*dist;
+    const ty = Math.sin(angle)*dist;
+    s.style.setProperty('--tx', tx+'px');
+    s.style.setProperty('--ty', ty+'px');
+    thankyou2.appendChild(s);
+    // force reflow then show animation
+    requestAnimationFrame(()=> s.classList.add('show'));
+  }
+}, 4300); // slightly after NHCE + subtitle settle
+
+/* Mic-based shake */
+micBtn2.onclick = async () => {
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    const src = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 512;
+    src.connect(analyser);
+
+    const buffer = new Uint8Array(analyser.frequencyBinCount);
+    micBtn2.textContent = 'Mic Active 🎤';
+
+    function loop(){
+      analyser.getByteFrequencyData(buffer);
+      const peak = Math.max(...buffer);
+      if(peak > 165){
+        camera2.style.transform = 'translateY(-4px) translateZ(10px)';
+        setTimeout(()=> camera2.style.transform = '', 90);
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }catch(err){
+    micBtn2.textContent = 'Mic Error ❌';
+  }
+};
+</script>
+</template>
+
+<!-- =========================
+     LOGO 3 TEMPLATE
+     ========================= -->
+<template id="logo3-template">
+<style>
+  :root{
+    --cyan:#00ffff;
+    --deep:#001018;
+    --glow: 0 0 12px rgba(0,255,255,0.12);
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    background:linear-gradient(180deg,#000006,#000012 40%, #05021a 100%);
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    color:#eafcff;
+  }
+  .stage{
+    position:relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    perspective:1400px;
+    background:radial-gradient(1200px 600px at 50% 40%, rgba(0,150,200,0.06), transparent 20%);
+  }
+
+  .backHome{
+    position:fixed;
+    top:16px;
+    left:16px;
+    z-index:200;
+    padding:8px 14px;
+    background:rgba(0,0,0,0.6);
+    color:#fff;
+    border:1px solid #555;
+    border-radius:6px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .backHome:hover{
+    background:#111;
+  }
+
+  .dyn-bg{
+    position:absolute;
+    inset:-20%;
+    z-index:0;
+    background:linear-gradient(120deg, #071029 0%, #001025 25%, #001a2a 50%, #230030 75%, #08101a 100%);
+    background-size: 300% 300%;
+    filter: blur(48px) saturate(120%);
+    animation:bgShift 18s ease-in-out infinite, bgZoom 12s ease-in-out infinite;
+    opacity:0.65;
+    transform-origin:center;
+  }
+  @keyframes bgShift{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  @keyframes bgZoom{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.15)}
+    100%{transform:scale(1)}
+  }
+
+  .spot{
+    position:absolute;
+    z-index:2;
+    width:90vmax;
+    height:90vmax;
+    top:-20vmax;
+    left:50%;
+    transform:translateX(-50%);
+    pointer-events:none;
+    background:radial-gradient(closest-side, rgba(255,255,255,0.12) 0%, rgba(0,255,255,0.03) 18%, rgba(0,0,0,0) 45%);
+    filter:blur(40px);
+    mix-blend-mode:overlay;
+    animation:spotMove 7s ease-in-out infinite alternate;
+  }
+  @keyframes spotMove{
+    0%{transform:translateX(-52%) translateY(-4%) scale(1)}
+    100%{transform:translateX(-48%) translateY(2%) scale(1.02)}
+  }
+
+  #matrixCanvas{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    opacity:0.18;
+    mix-blend-mode:screen;
+    pointer-events:none;
+    filter: blur(1px) contrast(120%);
+  }
+
+  .smoke{
+    position:absolute;
+    inset:0;
+    z-index:3;
+    pointer-events:none;
+    background:
+      radial-gradient(40% 25% at 20% 60%, rgba(0,255,255,0.02), transparent 20%),
+      radial-gradient(50% 30% at 80% 30%, rgba(0,150,255,0.02), transparent 20%),
+      radial-gradient(35% 20% at 50% 80%, rgba(255,0,200,0.008), transparent 10%);
+    filter: blur(18px);
+    animation:smokeDrift 12s linear infinite;
+    opacity:0.9;
+    mix-blend-mode:screen;
+  }
+  @keyframes smokeDrift{
+    0%{transform:translateY(0) scale(1)}
+    50%{transform:translateY(-18px) scale(1.02)}
+    100%{transform:translateY(0) scale(1)}
+  }
+
+  .projector{
+    position:relative;
+    width:480px;
+    height:420px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:5;
+    transform-style:preserve-3d;
+    transition: transform 900ms cubic-bezier(.2,.9,.25,1);
+  }
+
+  .cube{
+    position:absolute;
+    width:220px;
+    height:220px;
+    transform-style:preserve-3d;
+    transform: rotateX(-18deg) rotateY(10deg);
+    z-index:4;
+    filter:drop-shadow(0 22px 40px rgba(0,0,0,0.6));
+  }
+  .cube .face{
+    position:absolute;
+    inset:0;
+    width:220px;
+    height:220px;
+    background:linear-gradient(180deg, rgba(0,255,255,0.06), rgba(0,0,0,0.02));
+    border:1px solid rgba(0,255,255,0.14);
+    box-shadow: 0 0 30px rgba(0,255,255,0.06) inset, 0 0 30px rgba(0,160,255,0.03);
+    backdrop-filter: blur(4px) saturate(150%);
+  }
+  .cube .front{ transform: translateZ(110px); }
+  .cube .back{ transform: rotateY(180deg) translateZ(110px); }
+  .cube .right{ transform: rotateY(90deg) translateZ(110px); }
+  .cube .left{ transform: rotateY(-90deg) translateZ(110px); }
+  .cube .top{ transform: rotateX(90deg) translateZ(110px); }
+  .cube .bottom{ transform: rotateX(-90deg) translateZ(110px); }
+
+  .cube .face::before{
+    content:'';
+    position:absolute;
+    inset:10%;
+    border-radius:8px;
+    background: linear-gradient(135deg, rgba(0,255,255,0.02), transparent 40%),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 8px);
+    mix-blend-mode:overlay;
+  }
+
+  .ring{
+    position:absolute;
+    border-radius:50%;
+    border:2px solid transparent;
+    width:360px;
+    height:360px;
+    display:block;
+    z-index:3;
+    pointer-events:none;
+    transform-origin:center;
+    filter:drop-shadow(0 0 30px rgba(0,255,255,0.22));
+  }
+  .ring.r1{
+    border-top:2px solid rgba(0,255,255,0.85);
+    border-right:2px solid rgba(0,255,255,0.6);
+    animation:spinR 8s linear infinite;
+  }
+  .ring.r2{
+    width:430px;
+    height:430px;
+    border-bottom:2px solid rgba(0,255,255,0.6);
+    border-left:2px solid rgba(0,255,255,0.6);
+    opacity:0.7;
+    animation:spinRRev 11s linear infinite;
+  }
+  @keyframes spinR{from{transform:rotate(0deg)} to{transform:rotate(360deg)}}
+  @keyframes spinRRev{from{transform:rotate(360deg)} to{transform:rotate(0deg)}}
+
+  .laser{
+    position:absolute;
+    width:2px;
+    height:420px;
+    bottom:4px;
+    left:50%;
+    transform:translateX(-50%);
+    background:linear-gradient(180deg, rgba(0,255,255,0.9), rgba(0,255,255,0.05));
+    filter:blur(1px);
+    z-index:6;
+    mix-blend-mode:screen;
+    pointer-events:none;
+    opacity:0.9;
+  }
+  .laser.l2{ left:40%; transform:translateX(-50%) rotate(6deg); height:460px; opacity:0.7; }
+  .laser.l3{ left:60%; transform:translateX(-50%) rotate(-6deg); height:460px; opacity:0.7; }
+
+  .laser:after{
+    content:'';
+    position:absolute;
+    top:8%;
+    left:50%;
+    transform:translateX(-50%);
+    width:14px;
+    height:80px;
+    background:radial-gradient(circle at 50% 10%, rgba(0,255,255,0.85), rgba(0,255,255,0.05) 30%, transparent 60%);
+    filter: blur(12px);
+  }
+
+  .logoWrap{
+    position:relative;
+    z-index:7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    pointer-events:none;
+    transform: translateZ(160px);
+  }
+  .logo{
+    font-size:72px;
+    font-weight:900;
+    letter-spacing:8px;
+    color: #cfffff;
+    text-transform:uppercase;
+    text-align:center;
+    mix-blend-mode:screen;
+    transform-origin:center;
+    filter: drop-shadow(0 12px 28px rgba(0,200,255,0.08));
+    transition: text-shadow .2s linear;
+  }
+  .logo .scan{
+    display:block;
+    position:relative;
+    padding:6px 20px;
+    color:transparent;
+    background:linear-gradient(90deg, rgba(0,255,255,0.95), rgba(180,255,255,0.7));
+    -webkit-background-clip:text;
+    background-clip:text;
+    text-shadow: 0 0 30px rgba(0,255,255,0.22);
+  }
+
+  .logo::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(to bottom, rgba(0,255,255,0.08) 0 2px, rgba(0,255,255,0.02) 2px 6px);
+    mix-blend-mode:overlay;
+    opacity:0.8;
+    animation:scanText 1.8s linear infinite;
+  }
+  @keyframes scanText{from{transform:translateY(-100%)}to{transform:translateY(100%)}}
+
+  .glitchWrap{ position:relative; display:inline-block; }
+  .glitchCopy{
+    position:absolute;
+    left:0; top:0;
+    opacity:0.8;
+    color:#0ff;
+    transform-origin:left top;
+    mix-blend-mode:screen;
+    pointer-events:none;
+    text-shadow:none;
+    filter: blur(1px);
+  }
+
+  .tag{
+    margin-top:8px;
+    font-size:14px;
+    letter-spacing:3px;
+    color:rgba(180,255,255,0.55);
+    opacity:0.9;
+  }
+
+  .hud{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:40;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-size:13px;
+    color:rgba(200,255,255,0.7);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid rgba(0,255,255,0.05);
+    backdrop-filter: blur(6px) saturate(120%);
+  }
+  .hud button{
+    background:transparent;
+    color:var(--cyan);
+    border:1px solid rgba(0,255,255,0.14);
+    padding:6px 8px;
+    border-radius:6px;
+    cursor:pointer;
+  }
+  .hud .led{
+    width:10px;height:10px;border-radius:50%;background:rgba(0,255,255,0.16);box-shadow:0 0 12px rgba(0,255,255,0.06) inset;
+  }
+
+  @media (max-width:640px){
+    .projector{ width:320px; height:300px; }
+    .logo{ font-size:36px; letter-spacing:4px; transform: translateZ(120px); }
+    .cube{ width:160px; height:160px; }
+    .cube .face{ width:160px; height:160px; }
+  }
+</style>
+
+<button class="backHome" onclick="window.close()">← Back to Home</button>
+
+<div class="stage" id="stage">
+
+  <div class="dyn-bg" aria-hidden="true"></div>
+
+  <canvas id="matrixCanvas"></canvas>
+
+  <div class="spot" aria-hidden="true"></div>
+
+  <div class="smoke" aria-hidden="true"></div>
+
+  <div class="ring r1" id="ring1" aria-hidden="true"></div>
+  <div class="ring r2" id="ring2" aria-hidden="true"></div>
+
+  <div class="laser l1" id="laser1" aria-hidden="true"></div>
+  <div class="laser l2" id="laser2" aria-hidden="true"></div>
+  <div class="laser l3" id="laser3" aria-hidden="true"></div>
+
+  <div class="projector" id="projector">
+
+    <div class="cube" id="cube">
+      <div class="face front"></div>
+      <div class="face back"></div>
+      <div class="face right"></div>
+      <div class="face left"></div>
+      <div class="face top"></div>
+      <div class="face bottom"></div>
+    </div>
+
+    <div class="logoWrap">
+      <div class="logo glitch" id="logo">
+        <span class="glitchWrap">
+          <span class="scan" id="logoText">NHCE</span>
+          <span class="glitchCopy" id="g1" aria-hidden="true">NHCE</span>
+          <span class="glitchCopy" id="g2" aria-hidden="true">NHCE</span>
+        </span>
+      </div>
+      <div class="tag">HOLOGRAPHIC PROJECTOR</div>
+    </div>
+
+  </div>
+
+  <div class="hud" id="hud">
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="led" id="led"></div>
+      <div style="min-width:120px">Mic: <span id="micState">Off</span></div>
+    </div>
+    <button id="btnMic">Enable Mic</button>
+    <button id="btnGlitch">Glitch</button>
+  </div>
+
+</div>
+
+<script>
+const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+
+(function initMatrix(){
+  const canvas = document.getElementById('matrixCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, cols, drops, fontSize=14;
+  function onResize(){
+    w = canvas.width = innerWidth;
+    h = canvas.height = innerHeight;
+    cols = Math.floor(w / fontSize) + 1;
+    drops = Array(cols).fill(0).map(()=>Math.floor(Math.random()*h));
+  }
+  window.addEventListener('resize', onResize);
+  onResize();
+
+  const chars = "アカサタナハマヤラワアイウエオ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  function draw(speed=1, opacity=0.12){
+    ctx.fillStyle = "rgba(0,0,0,0.06)";
+    ctx.fillRect(0,0,w,h);
+    ctx.font = fontSize + "px monospace";
+    for (let i=0;i<cols;i++){
+      const x = i*fontSize;
+      const y = drops[i]*fontSize;
+      const text = chars.charAt(Math.floor(Math.random()*chars.length));
+      ctx.fillStyle = "rgba(0,255,200," + (0.6*opacity) + ")";
+      ctx.fillText(text, x, y);
+      if (y > h && Math.random() > 0.975/speed) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+
+  let matrixSpeed = 1.0;
+  function frame(){
+    draw(matrixSpeed, 0.18);
+    requestAnimationFrame(frame);
+  }
+  frame();
+
+  window.__matrix = { setSpeed(s){ matrixSpeed = clamp(s,0.2,6); } };
+})();
+
+(function initParticles(){
+  const stage = document.getElementById('stage');
+  const count = 30;
+  for(let i=0;i<count;i++){
+    const d = document.createElement('div');
+    d.className = 'particle';
+    d.style.position='absolute';
+    d.style.width=(4+Math.random()*6)+'px';
+    d.style.height=d.style.width;
+    d.style.left = (Math.random()*100)+'vw';
+    d.style.top = (Math.random()*100)+'vh';
+    d.style.background = 'radial-gradient(circle at 30% 30%, rgba(0,255,255,0.95), rgba(0,255,255,0.4))';
+    d.style.opacity = (0.15+Math.random()*0.6).toString();
+    d.style.filter = 'blur('+(0.5+Math.random()*8)+'px)';
+    d.style.transition = 'transform 6s linear';
+    stage.appendChild(d);
+    (function anim(el){
+      const dur = 6+Math.random()*10;
+      function loop(){
+        el.style.transform = 'translateY('+(-10 - Math.random()*40)+'vh) translateX('+(Math.random()*8-4)+'vw)';
+        setTimeout(()=>{
+          el.style.transform = 'translateY('+(20 + Math.random()*40)+'vh) translateX('+(Math.random()*8-4)+'vw)';
+        }, dur*400);
+        setTimeout(loop, dur*1000);
+      }
+      setTimeout(loop, Math.random()*2000);
+    })(d);
+  }
+})();
+
+const cube = document.getElementById('cube');
+const ring1 = document.getElementById('ring1');
+const ring2 = document.getElementById('ring2');
+const projector = document.getElementById('projector');
+const logo = document.getElementById('logo');
+const g1 = document.getElementById('g1');
+const g2 = document.getElementById('g2');
+const led = document.getElementById('led');
+const micState = document.getElementById('micState');
+
+let baseCubeSpeed = 0.003;
+let cubeAngleY = 0;
+let cubeAngleX = -0.32;
+let ringSpeed = 0.0009;
+let ringSpeed2 = -0.0006;
+let laserIntensity = 0.7;
+let globalGain = 0;
+
+function renderLoop(){
+  cubeAngleY += baseCubeSpeed * (1 + globalGain*1.6);
+  cubeAngleX = -0.32 + Math.sin(Date.now()/5000)*0.03;
+  cube.style.transform = `rotateX(${cubeAngleX}rad) rotateY(${cubeAngleY}rad)`;
+
+  const t = Date.now();
+  ring1.style.transform = `rotate(${t*ringSpeed}deg)`;
+  ring2.style.transform = `rotate(${t*ringSpeed2}deg)`;
+  document.querySelectorAll('.laser').forEach(l=>{
+    l.style.opacity = clamp(0.5 + Math.abs(Math.sin(t/200)) * (0.5 + globalGain*1.2), 0.25, 1.0);
+    l.style.filter = `drop-shadow(0 0 ${12+globalGain*40}px rgba(0,255,255,0.6))`;
+  });
+
+  window.__matrix && window.__matrix.setSpeed(1 + globalGain*2.4);
+
+  logo.style.textShadow = `0 0 ${16+globalGain*40}px rgba(0,255,255,${clamp(0.12+globalGain,0.12,1)}), 0 0 ${40+globalGain*80}px rgba(0,200,255,${clamp(0.08+globalGain*0.9,0.08,1)})`;
+
+  const zoom = 1 + Math.min(0.12, globalGain*0.12);
+  projector.style.transform = `scale(${zoom}) translateZ(0)`;
+
+  requestAnimationFrame(renderLoop);
+}
+renderLoop();
+
+function introGlitch(){
+  const duration = 1400;
+  const start = Date.now();
+  const doGlitch = () => {
+    const t = Date.now() - start;
+    if (t > duration) {
+      g1.style.opacity = '0';
+      g2.style.opacity = '0';
+      logo.style.transform = 'translateZ(0)';
+      return;
+    }
+    const p = Math.sin((t/duration)*Math.PI*4);
+    g1.style.opacity = '0.8';
+    g2.style.opacity = '0.8';
+    g1.style.transform = `translate(${Math.random()*14-7}px, ${Math.random()*6-3}px) skew(${Math.random()*6-3}deg)`;
+    g1.style.color = 'rgba(255,60,90,0.85)';
+    g2.style.transform = `translate(${Math.random()*14-7}px, ${Math.random()*6-3}px) skew(${Math.random()*6-3}deg)`;
+    g2.style.color = 'rgba(80,200,255,0.85)';
+    logo.style.transform = `translateZ(${40*Math.abs(p)}px) scale(${1 + Math.abs(p)*0.12})`;
+    requestAnimationFrame(doGlitch);
+  };
+  doGlitch();
+}
+introGlitch();
+
+let audioCtx, analyser, dataArray, sourceNode, mediaStream;
+const btnMic = document.getElementById('btnMic');
+
+async function enableMic(){
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true, video:false });
+    sourceNode = audioCtx.createMediaStreamSource(mediaStream);
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 1024;
+    const bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+    sourceNode.connect(analyser);
+
+    micState.innerText = 'On';
+    led.style.background = 'radial-gradient(circle at 30% 30%, #00ffdd, #007788)';
+    btnMic.innerText = 'Disable Mic';
+
+    const smoothing = 0.7;
+    let last = 0;
+    function audioLoop(){
+      analyser.getByteFrequencyData(dataArray);
+      let sum=0;
+      for(let i=0;i<dataArray.length;i++) sum += dataArray[i];
+      const avg = sum / dataArray.length / 255;
+      globalGain = (last*smoothing + avg*(1-smoothing));
+      last = globalGain;
+      baseCubeSpeed = 0.002 + globalGain*0.018;
+      ringSpeed = 0.0008 + globalGain*0.018;
+      ringSpeed2 = -0.0005 - globalGain*0.012;
+      laserIntensity = 0.35 + globalGain*1.5;
+      const peak = dataArray.reduce((a,b)=>Math.max(a,b),0);
+      if (peak > 220) {
+        flashGlitch();
+      }
+      requestAnimationFrame(audioLoop);
+    }
+    audioLoop();
+
+  } catch (err){
+    console.warn('Mic access denied or error:', err);
+    micState.innerText = 'Denied';
+    btnMic.innerText = 'Enable Mic';
+    led.style.background = 'radial-gradient(circle at 30% 30%, rgba(0,255,255,0.12), rgba(0,255,255,0.04))';
+    audioCtx = null;
+    globalGain = 0;
+  }
+}
+
+btnMic.addEventListener('click', async ()=>{
+  if (!audioCtx){
+    await enableMic();
+  } else {
+    try{
+      mediaStream && mediaStream.getTracks().forEach(t=>t.stop());
+    }catch(e){}
+    audioCtx && audioCtx.close();
+    audioCtx = null; analyser = null; dataArray = null; sourceNode = null;
+    micState.innerText = 'Off';
+    led.style.background = 'rgba(0,255,255,0.12)';
+    btnMic.innerText = 'Enable Mic';
+    globalGain = 0;
+  }
+});
+
+function flashGlitch(){
+  const oldG1 = g1.style.transform; 
+  const oldG2 = g2.style.transform;
+  g1.style.opacity = '1'; g2.style.opacity = '1';
+  for(let i=0;i<6;i++){
+    setTimeout(()=>{
+      g1.style.transform = `translate(${Math.random()*24-12}px, ${Math.random()*12-6}px) skew(${Math.random()*8-4}deg)`;
+      g2.style.transform = `translate(${Math.random()*24-12}px, ${Math.random()*12-6}px) skew(${Math.random()*8-4}deg)`;
+    }, i*40);
+  }
+  setTimeout(()=>{ g1.style.opacity='0'; g2.style.opacity='0'; g1.style.transform=oldG1; g2.style.transform=oldG2; }, 420);
+}
+
+document.getElementById('btnGlitch').addEventListener('click', ()=>{
+  introGlitch();
+});
+
+(function animateLasers(){
+  const l1 = document.getElementById('laser1');
+  const l2 = document.getElementById('laser2');
+  const l3 = document.getElementById('laser3');
+  function loop(){
+    const t = Date.now();
+    [l1,l2,l3].forEach((l,i)=>{
+      const s=1 + Math.sin((t/400)+(i*0.9))*0.12 + globalGain*0.3;
+      if (l.classList.contains('l2'))
+        l.style.transform = 'translateX(-50%) rotate(6deg) scaleY('+s+')';
+      else if (l.classList.contains('l3'))
+        l.style.transform = 'translateX(-50%) rotate(-6deg) scaleY('+s+')';
+      else
+        l.style.transform = 'translateX(-50%) scaleY('+s+')';
+      l.style.opacity = clamp(0.35 + globalGain*0.6 + (Math.sin(t/240+i)*0.05), 0.2, 1);
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+setTimeout(()=> {
+  if (!audioCtx){
+    const b = document.getElementById('btnMic');
+    b.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}], {duration:1300, iterations:3});
+  }
+}, 2500);
+
+let zoomed=false;
+document.getElementById('stage').addEventListener('click', ()=>{
+  zoomed = !zoomed;
+  document.getElementById('projector').style.transform = zoomed ? 'scale(1.06) translateZ(0)' : 'scale(1) translateZ(0)';
+});
+</script>
+</template>
+
+<!-- =========================
+     MAIN PAGE SCRIPT
+     ========================= -->
+<script>
+function openLogo(id){
+    const tpl = document.getElementById('logo' + id + '-template');
+    if(!tpl){ return; }
+    const w = window.open('', '_blank');
+    if(!w){
+        alert('Please allow popups to view the animation.');
+        return;
+    }
+    w.document.open();
+    w.document.write(
+      '<!DOCTYPE html><html lang="en"><head>' +
+      '<meta charset="UTF-8">' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+      '<title>Logo ' + id + ' Animation</title>' +
+      '</head><body>' +
+      tpl.innerHTML +
+      '</body></html>'
+    );
+    w.document.close();
+}
+</script>
+
+</body>
+</html>
