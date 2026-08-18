@@ -9,13 +9,13 @@ The project focuses on creativity, CSS styling, animations, transitions, and int
 
  ## Features:
  
- -> Three different CSS-based logos.
- -> Interactive buttons for selecting logos.
- -> CSS animations and transitions.
- -> Separate webpage for each logo.
- -> Pure HTML and CSS implementation.
- -> Simple and responsive design.
- -> No external image files required for the logos.
+ - Three different CSS-based logos.
+ - Interactive buttons for selecting logos.
+ - CSS animations and transitions.
+ - Separate webpage for each logo.
+ - Pure HTML and CSS implementation.
+ - Simple and responsive design.
+ - No external image files required for the logos.
  
 ## Technologies Used:
 
@@ -32,7 +32,7 @@ CSS3 – Logo design, styling, animations, and transitions.
 
 ## Project Structure
 
- ---
+```
 CSS-Art-Logo-Animation/
 │
 ├── index.html
@@ -40,7 +40,7 @@ CSS-Art-Logo-Animation/
 ├── logo2.html
 ├── logo3.html
 └── README.md
----
+```
 
 ## Objective
 
@@ -48,9 +48,9 @@ The main objective of this project is to explore the capabilities of CSS for cre
 
 ## Future Enhancements
 
--Add more CSS-created logos.
--Add advanced animations and transitions.
--Add dark/light mode.
--Add sound effects.
--Create a responsive mobile navigation menu.
--Add interactive controls for animation speed and style.
+- Add more CSS-created logos.
+- Add advanced animations and transitions.
+- Add dark/light mode.
+- Add sound effects.
+- Create a responsive mobile navigation menu.
+- Add interactive controls for animation speed and style.
